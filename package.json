@@ -1,0 +1,24 @@
+{
+  "name": "edusoft",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "type": "lib/index.d.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc -p tsconfig.json"
+  },
+  "author": "tp2012",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "@types/cheerio": "^0.22.21",
+    "@types/request-promise": "^4.1.46",
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  }
+}
