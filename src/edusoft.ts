@@ -9,14 +9,14 @@ export class Edusoft {
      * @param {string}      id          Your student ID.
      * @param {string}      password    Edusoft password.
      * @param {boolean}     loggedIn    Check login.
-     * @param {Object}      body        General data.
+     * @param {object}      body        General data.
      * @param {CrawlerAPI}  crawler     Object that can crawl the web page.
      */
     id: string;
     password: string;
     loggedIn: boolean;
     host: string;
-    body: Object;
+    body: object;
     crawler: CrawlerAPI;
 
     /**
@@ -35,9 +35,9 @@ export class Edusoft {
         this.loggedIn = false;
         this.host = 'https://edusoftweb.hcmiu.edu.vn';
         this.body = {
-            '__EVENTTARGET': '',
-            '__EVENTARGUMENT': '',
-            '__VIEWSTATEGENERATOR': 'CA0B0334'
+            __EVENTTARGET: '',
+            __EVENTARGUMENT: '',
+            __VIEWSTATEGENERATOR: 'CA0B0334'
         }
         this.crawler = new Crawler();
     }
@@ -51,13 +51,14 @@ export class Edusoft {
     async login(): Promise<boolean> {
         // Data of login form
         let data: object = {
-            'ctl00$ContentPlaceHolder1$ctl00$ucDangNhap$btnDangNhap': 'Đăng Nhập',
-            'ctl00$ContentPlaceHolder1$ctl00$ucDangNhap$txtTaiKhoa': this.id,
-            'ctl00$ContentPlaceHolder1$ctl00$ucDangNhap$txtMatKhau': this.password
+            ctl00$ContentPlaceHolder1$ctl00$ucDangNhap$btnDangNhap: 'Đăng Nhập',
+            ctl00$ContentPlaceHolder1$ctl00$ucDangNhap$txtTaiKhoa: this.id,
+            ctl00$ContentPlaceHolder1$ctl00$ucDangNhap$txtMatKhau: this.password
         }
 
         // Send data to login form
-        let $: CheerioAPI = await this.crawler.post(`${this.host}/default.aspx`, { ...this.body, ...data });
+        let $: CheerioAPI = await this.crawler
+            .post(`${this.host}/default.aspx`, { ...this.body, ...data });
 
         // Check login
         if (! $('#ctl00_Header1_Logout1_lblNguoiDung').text()) {
@@ -69,14 +70,14 @@ export class Edusoft {
     /**
      * Display a listing of news.
      * 
-     * @return {Promise<Object>}
+     * @return {Promise<object[]>}
      */
-    async getNews(): Promise<Object> {
-        let news: Object = await this.crawler.crawlNews(`${this.host}/default.aspx?page=danhsachthongtin&type=0`);
+    async getNews(): Promise<object[]> {
+        let news: object[] = await this.crawler
+            .crawlNews(`${this.host}/default.aspx?page=danhsachthongtin&type=0`);
 
         return news;
     }
-
 
     /**
      * Display schedule.
@@ -84,18 +85,19 @@ export class Edusoft {
      * @return {Promise<Object>}
      */
     @loggedIn
-    async getSchedule(): Promise<Object> {
-        return {};
+    async getSchedule(): Promise<object[]> {
+        return [{}];
     }
 
     /**
      * Display testing time.
      * 
-     * @return {Promise<Object>}
+     * @return {Promise<object[]>}
      */
     @loggedIn
-    async getTestSchedule(): Promise<Object> {
-        let testSchedule: Object = await this.crawler.crawlTestSchedule(`${this.host}/Default.aspx?page=xemlichthi`);
+    async getTestSchedule(): Promise<object[]> {
+        let testSchedule: object[] = await this.crawler
+            .crawlTestSchedule(`${this.host}/Default.aspx?page=xemlichthi`);
 
         return testSchedule;
     }
@@ -103,23 +105,24 @@ export class Edusoft {
     /**
      * Display the specified listing of scores.
      * 
-     * @param {Object}  obj
+     * @param {object}  obj
      * @param {number}  obj.year        School year.
      * @param {number}  obj.semester    Semester of year.
      * 
-     * @return {Promise<Object>}
+     * @return {Promise<object[]>}
      */
     @loggedIn
-    async getTranscript({ year = 2019, semester = 1 }: { year?: number, semester?: number }): Promise<Object> {
+    async getTranscript({ year = 2019, semester = 1 }: { year?: number, semester?: number }): Promise<object[]> {
         // Data of form
-        let data: Object = {
-            'ctl00$ContentPlaceHolder1$ctl00$MessageBox1$imgCloseButton': '',
-            'ctl00$ContentPlaceHolder1$ctl00$MessageBox1$btnOk': '',
-            'ctl00$ContentPlaceHolder1$ctl00$txtChonHK': '' + year + semester,
-            'ctl00$ContentPlaceHolder1$ctl00$btnChonHK': 'Xem'
+        let data: object = {
+            ctl00$ContentPlaceHolder1$ctl00$MessageBox1$imgCloseButton: '',
+            ctl00$ContentPlaceHolder1$ctl00$MessageBox1$btnOk: '',
+            ctl00$ContentPlaceHolder1$ctl00$txtChonHK: '' + year + semester,
+            ctl00$ContentPlaceHolder1$ctl00$btnChonHK: 'Xem'
         }
         
-        let scores: Object = await this.crawler.crawlTranscript(`${this.host}/Default.aspx?page=xemdiemthi`, { ...this.body, ...data })
+        let scores: object[] = await this.crawler
+            .crawlTranscript(`${this.host}/Default.aspx?page=xemdiemthi`, { ...this.body, ...data })
         
         return scores;
     }
@@ -127,11 +130,12 @@ export class Edusoft {
     /**
      * Display tuition information.
      * 
-     * @return {Promise<Object>}
+     * @return {Promise<object>}
      */
     @loggedIn
-    async getTuition(): Promise<Object> {
-        let tuition: Object = await this.crawler.crawlTuition(`${this.host}/Default.aspx?page=xemhocphi`);
+    async getTuition(): Promise<object> {
+        let tuition: object = await this.crawler
+            .crawlTuition(`${this.host}/Default.aspx?page=xemhocphi`);
 
         return tuition;
     }

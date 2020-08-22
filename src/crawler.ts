@@ -5,10 +5,10 @@ import cheerio from 'cheerio';
 interface CrawlerAPI {
     get(url: string): RequestPromise;
     post(url: string, data: object): RequestPromise;
-    crawlTranscript(url: string, data: object): Promise<Object>;
-    crawlNews(url: string): Promise<Object>;
-    crawlTestSchedule(url: string): Promise<Object>;
-    crawlTuition(url: string): Promise<Object>;
+    crawlTranscript(url: string, data: object): Promise<object[]>;
+    crawlNews(url: string): Promise<object[]>;
+    crawlTestSchedule(url: string): Promise<object[]>;
+    crawlTuition(url: string): Promise<object>;
 }
 
 class Crawler {
@@ -36,7 +36,7 @@ class Crawler {
         return this.send('POST', url, data);
     }
 
-    async crawlNews(url: string): Promise<Object> {
+    async crawlNews(url: string): Promise<object[]> {
         let $: CheerioAPI = await this.get(url);
         let news: object[] = [];
 
@@ -52,13 +52,13 @@ class Crawler {
         return news;
     }
 
-    async crawlTestSchedule(url: string): Promise<Object> {
+    async crawlTestSchedule(url: string): Promise<object[]> {
         let $: CheerioAPI = await this.get(url);
         let tests: object[] = [];
 
         $('#ctl00_ContentPlaceHolder1_ctl00_gvXem tr[onmouseout="className=\'\'"]').each((index, element) => {
             let columns: Cheerio = $(element).find('td span');
-            let test: object = {
+            let test: Object = {
                 subject: $(columns[2]).text(),
                 amount: $(columns[4]).text(),
                 date: $(columns[5]).text(),
@@ -71,7 +71,7 @@ class Crawler {
         return tests;
     }
 
-    async crawlTranscript(url: string, data: object): Promise<Object> {
+    async crawlTranscript(url: string, data: object): Promise<object[]> {
         await this.get(url);
 
         let $: CheerioAPI = await this.post(url, data);
@@ -91,7 +91,7 @@ class Crawler {
         return transcript;
     }
 
-    async crawlTuition(url: string): Promise<Object> {
+    async crawlTuition(url: string): Promise<object> {
         let $: CheerioAPI = await this.get(url);
         let information: object = {
             credits: $('#ctl00_ContentPlaceHolder1_ctl00_xdSoTinChiHPHK').text(),
