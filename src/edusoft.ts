@@ -1,5 +1,6 @@
 import { CrawlerAPI, Crawler } from './crawler';
 import { loggedIn } from './decorator';
+import fs from 'fs';
 
 export class Edusoft {
 
@@ -82,11 +83,15 @@ export class Edusoft {
     /**
      * Display schedule.
      * 
-     * @return {Promise<Object>}
+     * @return {Promise<object>}
      */
     @loggedIn
     async getSchedule(): Promise<object[]> {
-        return [{}];
+        let period: object[] = JSON.parse(fs.readFileSync(`${__dirname}/../period.json`, 'utf-8'));
+        let schedule = await this.crawler
+            .crawlSchedule(`${this.host}/Default.aspx?page=thoikhoabieu`, period);
+
+        return schedule;
     }
 
     /**

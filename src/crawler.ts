@@ -9,6 +9,7 @@ interface CrawlerAPI {
     crawlNews(url: string): Promise<object[]>;
     crawlTestSchedule(url: string): Promise<object[]>;
     crawlTuition(url: string): Promise<object>;
+    crawlSchedule(url: string, period: object[]): Promise<object[]>;
 }
 
 class Crawler {
@@ -106,6 +107,28 @@ class Crawler {
         }
 
         return information;
+    }
+
+    async crawlSchedule(url: string, period: object[]): Promise<any> {
+        let $: CheerioAPI = await this.get(url);
+        let rows = $('#ctl00_ContentPlaceHolder1_ctl00_Table1 > tbody > tr');
+        let schedule: object[] = [];
+
+        rows.each((start, tr) => {
+            $(tr).find('> td').each((i, td) => {
+                if ($(td).attr('maph')) {
+                    schedule.push({
+                        subject: $($(td).find('span')[0]).text(),
+                        room: $($(td).find('span')[2]).text(),
+                        date: i + 1,
+                        from: Object.values(period[start])[0],
+                        to: Object.values(period[start - 1 + +($(td).attr('rowspan') || '0')])[1]
+                    });
+                }
+            });
+        })
+
+        return schedule;
     }
 }
 
