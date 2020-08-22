@@ -1,15 +1,21 @@
-const loggedIn = (target: any, key: string, descriptor: any) => {
-    const originalMethod = descriptor.value;
+const loggedIn = (
+    target: Object,
+    propertyKey: string,
+    descriptor: any
+) => {
+    const method = descriptor.value;
 
     descriptor.value = async function (...args: any[]) {
         if (! this.loggedIn) {
             console.log('Logging in...');
-            let loggedIn: boolean = await this.login();
+            this.loggedIn = await this.login();
 
-            if (loggedIn === true) return originalMethod.apply(this, args);
+            if (this.loggedIn === true) return method.apply(this, args);
+            throw new Error('Login failed!');
         }
-        return originalMethod.apply(this, args);
+        return method.apply(this, args);
     }
+    return descriptor;
 }
 
 export {

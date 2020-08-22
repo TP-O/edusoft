@@ -28,4 +28,7 @@
     let tuition = await edu.getTuition();
 ### Test schedule
 
-    let testSchedule = await edu.getSchedule();
+    let testSchedule = await edu.getTestSchedule();
+### Schedule
+
+    let schedule = await edu.getSchedule();

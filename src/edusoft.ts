@@ -1,8 +1,8 @@
-import { CrawlerAPI, Crawler } from './crawler';
+import { ICrawler, Crawler } from './crawler';
 import { loggedIn } from './decorator';
 import fs from 'fs';
 
-export class Edusoft {
+class Edusoft {
 
     /**
      * Get some Edusoft account information.
@@ -11,14 +11,14 @@ export class Edusoft {
      * @param {string}      password    Edusoft password.
      * @param {boolean}     loggedIn    Check login.
      * @param {object}      body        General data.
-     * @param {CrawlerAPI}  crawler     Object that can crawl the web page.
+     * @param {ICrawler}    crawler     Object that can crawl the web page.
      */
     id: string;
     password: string;
-    loggedIn: boolean;
     host: string;
-    body: object;
-    crawler: CrawlerAPI;
+    private _body: object;
+    private _crawler: ICrawler;
+    private _loggedIn: boolean;
 
     /**
      * Initialize
@@ -26,30 +26,25 @@ export class Edusoft {
      * @param {string}  id          Your student ID.
      * @param {string}  password    Edusoft password.
      */
-    constructor(id: string, password: string) {
-        if (typeof id !== 'string' || typeof password !== 'string') {
-            throw new Error('ID and Password must be string!');
-        }
-
+    constructor(id: string, password: string, host: string|undefined) {
         this.id = id;
         this.password = password;
-        this.loggedIn = false;
-        this.host = 'https://edusoftweb.hcmiu.edu.vn';
-        this.body = {
+        this._loggedIn = false;
+        this._crawler = new Crawler();
+        this.host = host || 'https://edusoftweb.hcmiu.edu.vn';
+        this._body = {
             __EVENTTARGET: '',
             __EVENTARGUMENT: '',
             __VIEWSTATEGENERATOR: 'CA0B0334'
         }
-        this.crawler = new Crawler();
     }
 
     /**
      * Get session.
      * 
      * @return {Promise<boolean>}
-     * @throws {Error}
      */
-    async login(): Promise<boolean> {
+    private async login(): Promise<boolean> {
         // Data of login form
         let data: object = {
             ctl00$ContentPlaceHolder1$ctl00$ucDangNhap$btnDangNhap: 'Đăng Nhập',
@@ -58,14 +53,10 @@ export class Edusoft {
         }
 
         // Send data to login form
-        let $: CheerioAPI = await this.crawler
-            .post(`${this.host}/default.aspx`, { ...this.body, ...data });
+        let $: CheerioAPI = await this._crawler
+            .post(`${this.host}/default.aspx`, { ...this._body, ...data });
 
-        // Check login
-        if (! $('#ctl00_Header1_Logout1_lblNguoiDung').text()) {
-            throw new Error('Login failed!');
-        }
-        return this.loggedIn = true
+        return $('#ctl00_Header1_Logout1_lblNguoiDung').text() ? true : false;
     }
 
     /**
@@ -74,7 +65,7 @@ export class Edusoft {
      * @return {Promise<object[]>}
      */
     async getNews(): Promise<object[]> {
-        let news: object[] = await this.crawler
+        let news: object[] = await this._crawler
             .crawlNews(`${this.host}/default.aspx?page=danhsachthongtin&type=0`);
 
         return news;
@@ -88,7 +79,7 @@ export class Edusoft {
     @loggedIn
     async getSchedule(): Promise<object[]> {
         let period: object[] = JSON.parse(fs.readFileSync(`${__dirname}/../period.json`, 'utf-8'));
-        let schedule = await this.crawler
+        let schedule = await this._crawler
             .crawlSchedule(`${this.host}/Default.aspx?page=thoikhoabieu`, period);
 
         return schedule;
@@ -101,7 +92,7 @@ export class Edusoft {
      */
     @loggedIn
     async getTestSchedule(): Promise<object[]> {
-        let testSchedule: object[] = await this.crawler
+        let testSchedule: object[] = await this._crawler
             .crawlTestSchedule(`${this.host}/Default.aspx?page=xemlichthi`);
 
         return testSchedule;
@@ -126,8 +117,8 @@ export class Edusoft {
             ctl00$ContentPlaceHolder1$ctl00$btnChonHK: 'Xem'
         }
         
-        let scores: object[] = await this.crawler
-            .crawlTranscript(`${this.host}/Default.aspx?page=xemdiemthi`, { ...this.body, ...data })
+        let scores: object[] = await this._crawler
+            .crawlTranscript(`${this.host}/Default.aspx?page=xemdiemthi`, { ...this._body, ...data })
         
         return scores;
     }
@@ -139,9 +130,13 @@ export class Edusoft {
      */
     @loggedIn
     async getTuition(): Promise<object> {
-        let tuition: object = await this.crawler
+        let tuition: object = await this._crawler
             .crawlTuition(`${this.host}/Default.aspx?page=xemhocphi`);
 
         return tuition;
     }
+}
+
+export {
+    Edusoft
 }

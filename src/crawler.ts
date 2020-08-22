@@ -2,7 +2,7 @@ import { CookieJar } from 'request';
 import requestPromise, { RequestPromise } from 'request-promise';
 import cheerio from 'cheerio';
 
-interface CrawlerAPI {
+interface ICrawler {
     get(url: string): RequestPromise;
     post(url: string, data: object): RequestPromise;
     crawlTranscript(url: string, data: object): Promise<object[]>;
@@ -133,6 +133,6 @@ class Crawler {
 }
 
 export {
-    CrawlerAPI,
+    ICrawler,
     Crawler
 }
