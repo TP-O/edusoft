@@ -20,9 +20,26 @@ class Crawler {
     }
 
     public send(method: string, url: string, data?: object): RequestPromise {
+        // Get key and value of data
+        let form: any[] = [];
+        if (data) {
+            for (const [key, value] of Object.entries(data)) {
+                form.push({
+                    'Content-Disposition': `form-data; name="${key}"`,
+                    body: value
+                })
+            }
+        }
+
         return requestPromise(url, {
             method: method,
-            formData: data,
+            headers: {
+                'content-type': 'multipart/form-data'
+            },
+            multipart: {
+                chunked: false,
+                data: form
+            },
             followAllRedirects: true,
             jar: this.cookie,
             transform: (body) => cheerio.load(body)
