@@ -13,12 +13,6 @@ interface ICrawler {
 }
 
 class Crawler {
-    public cookie: CookieJar;
-
-    public constructor() {
-        this.cookie = requestPromise.jar();
-    }
-
     public send(method: string, url: string, data?: object): RequestPromise {
         // Get key and value of data
         let form: any[] = [];
@@ -41,7 +35,7 @@ class Crawler {
                 data: form
             },
             followAllRedirects: true,
-            jar: this.cookie,
+            jar: true,
             transform: (body) => cheerio.load(body)
         });
     }

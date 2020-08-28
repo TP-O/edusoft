@@ -56,7 +56,7 @@ class Edusoft {
         let $: CheerioAPI = await this._crawler
             .post(`${this.host}/default.aspx`, { ...this._body, ...data });
 
-        return $('#ctl00_Header1_Logout1_lbtnLogOut').text() ? true : false;
+        return $('#ctl00_Header1_Logout1_lbtnChangePass').text() ? true : false;
     }
 
     /**
