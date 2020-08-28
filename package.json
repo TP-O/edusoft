@@ -1,6 +1,6 @@
 {
   "name": "edusoft",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "**Edusoft** can help you get information from Edusoft website easily.",
   "main": "lib/index.js",
   "type": "lib/index.d.js",
@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc -p tsconfig.json"
   },
-  "author": "tp2012",
+  "author": "TP-O",
   "license": "ISC",
   "devDependencies": {
     "reflect-metadata": "^0.1.13",
@@ -17,7 +17,6 @@
   "dependencies": {
     "@types/cheerio": "^0.22.21",
     "@types/request-promise": "^4.1.46",
-    "axios": "^0.19.2",
     "cheerio": "^1.0.0-rc.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.6"
@@ -27,10 +26,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tp2012/edusoft.git"
+    "url": "git+https://github.com/TP-O/edusoft.git"
   },
   "bugs": {
-    "url": "https://github.com/tp2012/edusoft/issues"
+    "url": "https://github.com/TP-O/edusoft/issues"
   },
-  "homepage": "https://github.com/tp2012/edusoft#readme"
+  "homepage": "https://github.com/TP-O/edusoft#readme"
 }

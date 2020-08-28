@@ -26,7 +26,7 @@ class Edusoft {
      * @param {string}  id          Your student ID.
      * @param {string}  password    Edusoft password.
      */
-    constructor(id: string, password: string, host: string|undefined) {
+    constructor(id: string, password: string, host?: string|undefined) {
         this.id = id;
         this.password = password;
         this._loggedIn = false;
@@ -44,7 +44,7 @@ class Edusoft {
      * 
      * @return {Promise<boolean>}
      */
-    private async login(): Promise<boolean> {
+    async login(): Promise<boolean> {
         // Data of login form
         let data: object = {
             ctl00$ContentPlaceHolder1$ctl00$ucDangNhap$btnDangNhap: 'Đăng Nhập',
@@ -56,7 +56,7 @@ class Edusoft {
         let $: CheerioAPI = await this._crawler
             .post(`${this.host}/default.aspx`, { ...this._body, ...data });
 
-        return $('#ctl00_Header1_Logout1_lblNguoiDung').text() ? true : false;
+        return $('#ctl00_Header1_Logout1_lbtnLogOut').text() ? true : false;
     }
 
     /**

@@ -43,11 +43,11 @@ class Crawler {
 
         $('.TextTitle').each((index, element) => {
             let text:string[] = $(element).text().split('\n').join('').split('... ');
-            let title: string = text[0] + '...';
+            let title: string = text[0];
             let date: string = text[1];
             let link: string|undefined = `https://edusoftweb.hcmiu.edu.vn/${$(element).attr('href')}`;
 
-            news.push({ title: title, date: date, link: link });
+            if (title && date) news.push({ title: title, date: date, link: link });
         });
 
         return news;
