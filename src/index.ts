@@ -1,3 +1,3 @@
-import { Edusoft } from './edusoft';
+import { Edusoft, EdusoftAPI } from './edusoft';
 
-export { Edusoft }
+export { Edusoft, EdusoftAPI }

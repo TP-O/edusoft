@@ -2,6 +2,15 @@ import { ICrawler, Crawler } from './crawler';
 import { loggedIn } from './decorator';
 import period from '../period.json';
 
+interface EdusoftAPI {
+    login(): Promise<boolean>;
+    getNews(): Promise<object[]>;
+    getSchedule(): Promise<object[]>;
+    getTestSchedule(): Promise<object[]>;
+    getTranscript(info?: { year: number, semester:  number }): Promise<object[]>;
+    getTuition(): Promise<object>;
+}
+
 class Edusoft {
 
     /**
@@ -137,5 +146,6 @@ class Edusoft {
 }
 
 export {
-    Edusoft
+    Edusoft,
+    EdusoftAPI
 }
