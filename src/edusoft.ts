@@ -4,6 +4,7 @@ import period from '../period.json';
 
 interface EdusoftAPI {
     login(): Promise<boolean>;
+    logout(): Promise<boolean>;
     getNews(): Promise<object[]>;
     getSchedule(): Promise<object[]>;
     getTestSchedule(): Promise<object[]>;
@@ -66,6 +67,16 @@ class Edusoft {
             .post(`${this.host}/default.aspx`, { ...this._body, ...data });
 
         return $('#ctl00_Header1_Logout1_lbtnChangePass').text() ? true : false;
+    }
+
+    async logout(): Promise<boolean> {
+        let data: any = { ...this._body };
+        data.__EVENTARGUMENT = 'ctl00$Header1$Logout1$lbtnLogOut';
+
+        let $: CheerioAPI = await this._crawler
+            .post(`${this.host}/default.aspx`, data);
+
+        return $('#ctl00_Header1_Logout1_lbtnChangePass').text() ? false : true;
     }
 
     /**
