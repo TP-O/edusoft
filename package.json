@@ -1,6 +1,6 @@
 {
   "name": "edusoft",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "**Edusoft** can help you get information from Edusoft website easily.",
   "main": "lib/index.js",
   "type": "lib/index.d.js",
