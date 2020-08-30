@@ -71,7 +71,7 @@ class Edusoft {
 
     async logout(): Promise<boolean> {
         let data: any = { ...this._body };
-        data.__EVENTARGUMENT = 'ctl00$Header1$Logout1$lbtnLogOut';
+        data.__EVENTTARGET = 'ctl00$Header1$Logout1$lbtnLogOut';
 
         let $: CheerioAPI = await this._crawler
             .post(`${this.host}/default.aspx`, data);
