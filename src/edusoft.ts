@@ -8,7 +8,10 @@ interface EdusoftAPI {
     getNews(): Promise<object[]>;
     getSchedule(): Promise<object[]>;
     getTestSchedule(): Promise<object[]>;
-    getTranscript(info?: { year: number, semester:  number }): Promise<object[]>;
+    getTranscript({ year, semester }: {
+        year?: number;
+        semester?: number;
+    }): Promise<object[]>;
     getTuition(): Promise<object>;
 }
 
