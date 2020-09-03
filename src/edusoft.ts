@@ -89,7 +89,7 @@ class Edusoft {
      */
     async getNews(): Promise<object[]> {
         let news: object[] = await this._crawler
-            .crawlNews(`${this.host}/default.aspx?page=danhsachthongtin&type=0`);
+            .crawlNews(`${this.host}/default.aspx?page=danhsachthongtin&type=0`, this.host);
 
         return news;
     }

@@ -1,4 +1,3 @@
-import { CookieJar } from 'request';
 import requestPromise, { RequestPromise } from 'request-promise';
 import cheerio from 'cheerio';
 
@@ -6,7 +5,7 @@ interface ICrawler {
     get(url: string): RequestPromise;
     post(url: string, data: object): RequestPromise;
     crawlTranscript(url: string, data: object): Promise<object[]>;
-    crawlNews(url: string): Promise<object[]>;
+    crawlNews(url: string, domain: string): Promise<object[]>;
     crawlTestSchedule(url: string): Promise<object[]>;
     crawlTuition(url: string): Promise<object>;
     crawlSchedule(url: string, period: object[]): Promise<object[]>;
@@ -48,7 +47,7 @@ class Crawler {
         return this.send('POST', url, data);
     }
 
-    async crawlNews(url: string): Promise<object[]> {
+    async crawlNews(url: string, domain: string): Promise<object[]> {
         let $: CheerioAPI = await this.get(url);
         let news: object[] = [];
 
@@ -56,7 +55,7 @@ class Crawler {
             let text:string[] = $(element).text().split('\n').join('').split('... ');
             let title: string = text[0];
             let date: string = text[1];
-            let link: string|undefined = `https://edusoftweb.hcmiu.edu.vn/${$(element).attr('href')}`;
+            let link: string|undefined = `${domain}/${$(element).attr('href')}`;
 
             if (title && date) news.push({ title: title, date: date, link: link });
         });
