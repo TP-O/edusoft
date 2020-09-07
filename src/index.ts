@@ -1,3 +1,4 @@
-import { Edusoft, EdusoftAPI } from './edusoft';
+import { EduSoft } from './edusoft';
+import IEduSoft from './contracts/iedusoft';
 
-export { Edusoft, EdusoftAPI }
+export { EduSoft, IEduSoft };

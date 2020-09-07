@@ -2,8 +2,8 @@
 
 **Edusoft** can help you get information from Edusoft website easily.
 
-    const { Edusoft } = require('edusoft');
-    const edu = new Edusoft('<ID>', '<password>');
+    const { EduSoft } = require('edusoft');
+    const edu = new EduSoft('<ID>', '<password>');
 
 ## Installation
 
@@ -15,6 +15,7 @@
  - Get Edusoft news
  - Get tuition
  - Get test schedule
+ - Get schedule
 
 ## API
 ### List of scores
