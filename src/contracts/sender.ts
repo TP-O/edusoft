@@ -1,6 +1,7 @@
 import { RequestPromise } from 'request-promise';
 
-export default interface ISender {
+export interface ISender
+{
     get(url: string): RequestPromise;
     put(url: string, data?: object): RequestPromise;
     post(url: string, data?: object): RequestPromise;

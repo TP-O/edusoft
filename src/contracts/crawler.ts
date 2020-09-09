@@ -1,4 +1,5 @@
-export default interface ICrawler {
+export interface ICrawler
+{
     crawlTuition(url: string): Promise<object>;
     crawlTestSchedule(url: string): Promise<object[]>;
     crawlNews(url: string, domain: string): Promise<object[]>;

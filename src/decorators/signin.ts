@@ -1,4 +1,4 @@
-export default (
+export const requireSignIn = (
     target: Object,
     propertyKey: string,
     descriptor: any

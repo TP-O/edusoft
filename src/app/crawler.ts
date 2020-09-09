@@ -1,7 +1,9 @@
-import ISender from './contracts/isender';
+import { ICrawler } from '../contracts/crawler';
+import { ISender } from '../contracts/sender';
 import { Sender } from './sender';
 
-class Crawler {
+export class Crawler implements ICrawler
+{
     private _sender: ISender;
 
     public constructor()
@@ -9,13 +11,13 @@ class Crawler {
         this._sender = new Sender();
     }
 
-    async crawlNews(url: string, domain: string): Promise<Array<object>>
+    async crawlNews(url: string, domain: string): Promise<object[]>
     {
         let $: CheerioAPI = await this._sender.get(url);
-        let news: Array<object> = [];
+        let news: object[] = [];
 
         $('.TextTitle').each((index, element) => {
-            let text:string[] = $(element).text().split('\n').join('').split('... ');
+            let text: string[] = $(element).text().split('\n').join('').split('... ');
             let title: string = text[0];
             let date: string = text[1];
             let link: string|undefined = `${domain}/${$(element).attr('href')}`;
@@ -26,14 +28,14 @@ class Crawler {
         return news;
     }
 
-    async crawlTestSchedule(url: string): Promise<Array<object>>
+    async crawlTestSchedule(url: string): Promise<object[]>
     {
         let $: CheerioAPI = await this._sender.get(url);
-        let tests: Array<object> = [];
+        let tests: object[] = [];
 
         $('#ctl00_ContentPlaceHolder1_ctl00_gvXem tr[onmouseout="className=\'\'"]').each((index, element) => {
             let columns: Cheerio = $(element).find('td span');
-            let test: Object = {
+            let test: object = {
                 subject: $(columns[2]).text(),
                 amount: $(columns[4]).text(),
                 date: $(columns[5]).text(),
@@ -46,12 +48,12 @@ class Crawler {
         return tests;
     }
 
-    async crawlTranscript(url: string, data: object): Promise<Array<object>>
+    async crawlTranscript(url: string, data: object): Promise<object[]>
     {
         await this._sender.get(url);
 
         let $: CheerioAPI = await this._sender.post(url, data);
-        let transcript: Array<object> = [];
+        let transcript: object[] = [];
 
         $('#ctl00_ContentPlaceHolder1_ctl00_div1 .row-diem').each((index, element) => {
             let columns: Cheerio = $(element).find('td');
@@ -85,11 +87,11 @@ class Crawler {
         return information;
     }
 
-    async crawlSchedule(url: string, period: Array<object>): Promise<any>
+    async crawlSchedule(url: string, period: object[]): Promise<any>
     {
         let $: CheerioAPI = await this._sender.get(url);
         let rows = $('#ctl00_ContentPlaceHolder1_ctl00_Table1 > tbody > tr');
-        let schedule: Array<object> = [];
+        let schedule: object[] = [];
 
         rows.each((start, tr) => {
             $(tr).find('> td').each((i, td) => {
@@ -108,5 +110,3 @@ class Crawler {
         return schedule;
     }
 }
-
-export { Crawler };

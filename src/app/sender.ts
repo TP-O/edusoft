@@ -1,12 +1,12 @@
 import requestPromise, { RequestPromise } from 'request-promise';
-import ISender from './contracts/isender';
+import { ISender } from '../contracts/sender';
 import cheerio from 'cheerio';
 
-class Sender implements ISender
+export class Sender implements ISender
 {
     private _send(method: string, url: string, data?: object): RequestPromise
     {
-        let convertedData: Array<any> = data ? this._convertData(data): [];
+        let convertedData: any[] = data ? this._convertData(data): [];
 
         return requestPromise(url, {
             method: method,
@@ -23,9 +23,9 @@ class Sender implements ISender
         });
     }
 
-    private _convertData(data: object): Array<any>
+    private _convertData(data: object): any[]
     {
-        let convertedData: Array<any> = [];
+        let convertedData: any[] = [];
         
         for (const [key, value] of Object.entries(data)) {
             convertedData.push({
@@ -57,5 +57,3 @@ class Sender implements ISender
         return this._send('DELETE', url, data);
     }
 }
-
-export { Sender };

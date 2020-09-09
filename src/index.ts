@@ -1,4 +1,4 @@
-import { EduSoft } from './edusoft';
-import IEduSoft from './contracts/iedusoft';
+import { EduSoft } from './app/edusoft';
+import { IEduSoft } from './contracts/edusoft';
 
 export { EduSoft, IEduSoft };

@@ -1,33 +1,46 @@
-import requireSignIn from './decorators/signin';
-import IEduSoft from './contracts/iedusoft';
-import ICrawler from './contracts/icrawler';
-import ISender from './contracts/isender';
+import { requireSignIn } from '../decorators/signin';
+import { ICrawler } from '../contracts/crawler';
+import { ISender } from '../contracts/sender';
+import { IEduSoft } from '../contracts/edusoft';
 import { Crawler } from './crawler';
 import { Sender } from './sender';
-import data from '../data.json';
+import data from '../../data.json';
 
-class EduSoft implements IEduSoft
+export class EduSoft implements IEduSoft
 {
-
     /**
-     * Get some Edusoft account information.
-     * 
-     * @param {string}      _host       Domain name
-     * @param {string}      _username   Student ID
-     * @param {string}      _password   Password
-     * @param {object}      _body       General data
-     * @param {boolean}     _signedIn   Check sign-in status
-     * @param {ISender}     _sender     Send request
-     * @param {ICrawler}    _crawler    Crawl the web page
+     * Domain name
      */
     private _host: string;
-    private _username: string;
-    private _password: string;
 
+    /**
+     * Student ID
+     */
+    private _username: string;
+
+    /**
+     * Password
+     */
+    private _password: string;    
+
+    /**
+     * General data
+     */
     private _body: object;
+
+    /**
+     * Sign-in status
+     */
     private _signedIn: boolean;
 
+    /**
+     * Send request
+     */
     private _sender: ISender;
+
+    /**
+     * Crawl the web page
+     */
     private _crawler: ICrawler;
 
     /**
@@ -40,7 +53,7 @@ class EduSoft implements IEduSoft
     constructor(username: string, password: string, host?: string)
     {
         this._username = username;
-        this._password = password;
+        this._password = password
         this._host = host || 'https://edusoftweb.hcmiu.edu.vn';
 
         this._body = {
@@ -53,11 +66,7 @@ class EduSoft implements IEduSoft
         this._sender = new Sender();
         this._crawler = new Crawler();
     }
-    /**
-     * Sign-in
-     * 
-     * @return {Promise<boolean>}
-     */
+
     public async signIn(): Promise<boolean>
     {
         // Data of login form
@@ -74,11 +83,6 @@ class EduSoft implements IEduSoft
         return $('#ctl00_Header1_Logout1_lbtnChangePass').text() ? true : false;
     }
 
-    /**
-     * Sign-out
-     * 
-     * @return {Promise<boolean>}
-     */
     public async signOut(): Promise<boolean>
     {
         let data: any = { ...this._body };
@@ -90,26 +94,16 @@ class EduSoft implements IEduSoft
         return $('#ctl00_Header1_Logout1_lbtnChangePass').text() ? false : true;
     }
 
-    /**
-     * Display a listing of news
-     * 
-     * @return {Promise<Array<object>>}
-     */
-    public async getNews(): Promise<Array<object>>
+    public async getNews(): Promise<object[]>
     {
-        let news: Array<object> = await this._crawler
+        let news: object[] = await this._crawler
             .crawlNews(`${this._host}/default.aspx?page=danhsachthongtin&type=0`, this._host);
 
         return news;
     }
 
-    /**
-     * Display schedule
-     * 
-     * @return {Promise<object>}
-     */
     @requireSignIn
-    public async getSchedule(): Promise<Array<object>>
+    public async getSchedule(): Promise<object[]>
     {
         let schedule = await this._crawler
             .crawlSchedule(`${this._host}/Default.aspx?page=thoikhoabieu`, data['period']);
@@ -117,13 +111,8 @@ class EduSoft implements IEduSoft
         return schedule;
     }
 
-    /**
-     * Display test schedule
-     * 
-     * @return {Promise<Array<object>>}
-     */
     @requireSignIn
-    public async getTestSchedule(): Promise<Array<object>>
+    public async getTestSchedule(): Promise<object[]>
     {
         let testSchedule: object[] = await this._crawler
             .crawlTestSchedule(`${this._host}/Default.aspx?page=xemlichthi`);
@@ -131,18 +120,8 @@ class EduSoft implements IEduSoft
         return testSchedule;
     }
 
-    /**
-     * Display the specified listing of scores
-     * 
-     * @param {object}  obj
-     * @param {number}  obj.year        School year.
-     * @param {number}  obj.semester    Semester of year.
-     * 
-     * @return {Promise<Array<object>>}
-     */
     @requireSignIn
-    public async getTranscript({ year = 2019, semester = 1 }:
-        { year?: number, semester?: number }): Promise<Array<object>>
+    public async getTranscript(year: number, semester: number): Promise<object[]>
     {
         // Data of form
         let data: object = {
@@ -158,11 +137,6 @@ class EduSoft implements IEduSoft
         return scores;
     }
 
-    /**
-     * Display tuition information.
-     * 
-     * @return {Promise<object>}
-     */
     @requireSignIn
     public async getTuition(): Promise<object>
     {
@@ -172,5 +146,3 @@ class EduSoft implements IEduSoft
         return tuition;
     }
 }
-
-export { EduSoft };
