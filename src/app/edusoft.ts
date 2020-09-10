@@ -2,10 +2,11 @@ import { requireSignIn } from '../decorators/signin';
 import { ICrawler } from '../contracts/crawler';
 import { ISender } from '../contracts/sender';
 import { IEduSoft } from '../contracts/edusoft';
-import { Crawler } from './crawler';
-import { Sender } from './sender';
+import { inject, injectable } from 'inversify';
 import data from '../../data.json';
+import 'reflect-metadata';
 
+@injectable()
 export class EduSoft implements IEduSoft
 {
     /**
@@ -50,11 +51,14 @@ export class EduSoft implements IEduSoft
      * @param {string}  password    Password
      * @param {string}  host        Domain name
      */
-    constructor(username: string, password: string, host?: string)
+    constructor(
+        @inject('ISender') sender: ISender,
+        @inject('ICrawler') crawler: ICrawler
+    )
     {
-        this._username = username;
-        this._password = password
-        this._host = host || 'https://edusoftweb.hcmiu.edu.vn';
+        this._username = '';
+        this._password = '';
+        this._host = 'https://edusoftweb.hcmiu.edu.vn';
 
         this._body = {
             __EVENTTARGET: '',
@@ -63,8 +67,23 @@ export class EduSoft implements IEduSoft
         };
         this._signedIn = false;
 
-        this._sender = new Sender();
-        this._crawler = new Crawler();
+        this._sender = sender;
+        this._crawler = crawler;
+    }
+
+    public setUsername(username: string): void
+    {
+        this._username = username;
+    }
+
+    public setPassword(password: string): void
+    {
+        this._password = password;
+    }
+
+    public setHost(host: string): void
+    {
+        this._host = host;
     }
 
     public async signIn(): Promise<boolean>

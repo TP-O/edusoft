@@ -1,14 +1,16 @@
 import { ICrawler } from '../contracts/crawler';
 import { ISender } from '../contracts/sender';
-import { Sender } from './sender';
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 
+@injectable()
 export class Crawler implements ICrawler
 {
     private _sender: ISender;
 
-    public constructor()
+    public constructor(@inject('ISender') sender: ISender)
     {
-        this._sender = new Sender();
+        this._sender = sender;
     }
 
     async crawlNews(url: string, domain: string): Promise<object[]>

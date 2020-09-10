@@ -17,6 +17,28 @@ export interface IEduSoft extends Auth
     signOut(): Promise<boolean>;
 
     /**
+     * Set username
+     * 
+     * @param username 
+     */
+    setUsername(username: string): void;
+
+    /**
+     * 
+     * Set password
+     * 
+     * @param password 
+     */
+    setPassword(password: string): void;
+
+    /**
+     * Set host
+     * 
+     * @param host 
+     */
+    setHost(host: string): void;
+
+    /**
      * Display a listing of news
      * 
      * @return {Promise<object[]>}

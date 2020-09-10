@@ -1,7 +1,10 @@
 import requestPromise, { RequestPromise } from 'request-promise';
 import { ISender } from '../contracts/sender';
 import cheerio from 'cheerio';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
 
+@injectable()
 export class Sender implements ISender
 {
     private _send(method: string, url: string, data?: object): RequestPromise
