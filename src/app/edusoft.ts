@@ -164,4 +164,97 @@ export class EduSoft implements IEduSoft
 
         return tuition;
     }
+
+    @requireSignIn
+    public async register(id: string): Promise<any>
+    {
+        await this._sender.get(`${this._host}/Default.aspx?page=dkmonhoc`);
+
+        let data = id.split('|');
+        let selected = {
+            "check": true,
+            "maDK": data[0],
+            "maMH": data[1],
+            "tenMH": data[2],
+            "maNh": data[3],
+            "sotc": data[4],
+            "strSoTCHP": data[5],
+            "ngaythistr": data[6],
+            "tietbd": data[7],
+            "sotiet": data[8],
+            "soTCTichLuyToiThieuMonYeuCau": data[9],
+            "choTrung": data[10],
+            "soTCMinMonYeuCau": data[11],
+            "maKhoiSinhVien": data[12]
+        };
+        let rs = await this._sender
+            .post(
+                `${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`,
+                selected,
+                {
+                    "X-AjaxPro-Method": "DangKySelectedChange"
+                },
+                true);
+        
+        data = rs.value.split('|');
+        let save = {
+            "isValidCoso": false,
+            "isValidTKB": false,
+            "maDK": data[1],
+            "maMH": data[12],
+            "sotc": data[13],
+            "tenMH": data[14],
+            "maNh": data[15],
+            "strsoTCHP": data[16],
+            "isCheck": "true",
+            "oldMaDK": data[4],
+            "strngayThi": data[25],
+            "tietBD": data[26],
+            "soTiet": data[27],
+            "isMHDangKyCungKhoiSV": data[35]
+        }
+        rs = await this._sender
+            .post(
+                `${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`,
+                save,
+                {
+                    "X-AjaxPro-Method": "LuuVaoKetQuaDangKy"
+                },
+                true);
+        
+        let checked = {};
+        rs = await this._sender
+            .post(
+                `${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`,
+                checked,
+                {
+                    "X-AjaxPro-Method": "KiemTraTrungNhom"
+                },
+                true);
+        
+        let saved = {};
+        rs = await this._sender
+            .post(
+                `${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`,
+                saved,
+                {
+                    "X-AjaxPro-Method": "LuuDanhSachDangKy"
+                },
+                true);
+        
+        let saved2 = {
+            "isCheckSongHanh":false,
+            "ChiaHP":false
+        };
+        rs = await this._sender
+            .post(
+                `${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`,
+                saved2,
+                {
+                    "X-AjaxPro-Method": "LuuDanhSachDangKy_HopLe"
+                },
+                true);
+
+        return rs;
+    }
 }
