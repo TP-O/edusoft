@@ -176,17 +176,19 @@ export class EduSoft implements IEduSoft
     @requireSignIn
     public async register(id: string): Promise<any>
     {
-        await this._sender.get(`${this._host}/Default.aspx?page=dkmonhoc`);
-
         this._register.setId(id);
 
         let rs = await this._register
-            .select(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`)
+            .access(`${this._host}/Default.aspx?page=dkmonhoc`)
+            .then(r => r.select(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
             .then(r => r.save(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
             .then(r => r.check(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
             .then(r => r.saved(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
             .then(r => r.saved2(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
-            .catch(e => false);
+            .catch(e => {
+                this._register.resetAccessStatus();
+                return false;
+            });
 
         return rs;
     }

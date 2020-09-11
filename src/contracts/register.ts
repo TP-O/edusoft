@@ -2,6 +2,10 @@ export interface IRegister
 {
     setId(id: string): void;
 
+    resetAccessStatus(): void;
+
+    access(url: string): Promise<IRegister>;
+
     select(url: string): Promise<IRegister>;
 
     save(url: string): Promise<IRegister>;

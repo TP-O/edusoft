@@ -8,6 +8,7 @@ export class Register implements IRegister
 {
     private _id: any;
     private _rs: any;
+    private _accessed: boolean = false;
     private _sender: ISender;
 
     public constructor(@inject('ISender') sender: ISender)
@@ -18,6 +19,20 @@ export class Register implements IRegister
     public setId(id: string): void
     {
         this._id = id;
+    }
+
+    public resetAccessStatus(): void
+    {
+        this._accessed = false;
+    }
+
+    public async access(url: string): Promise<IRegister>
+    {
+        if (! this._accessed) {
+            await this._sender.get(url);
+            this._accessed = true;
+        }
+        return this;
     }
 
     public async select(url: string): Promise<IRegister>
