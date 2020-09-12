@@ -7,7 +7,7 @@ import 'reflect-metadata';
 @injectable()
 export class Sender implements ISender
 {
-    private _send(method: string, url: string, data?: object): RequestPromise
+    private _send(method: string, url: string, data?: object, headers?: object, json?: boolean): RequestPromise
     {
         let convertedData: any[] = data ? this._convertData(data): [];
 
@@ -15,14 +15,16 @@ export class Sender implements ISender
             method: method,
             headers: {
                 'content-type': 'multipart/form-data',
+                ...headers
             },
-            multipart: {
+            multipart: json ? undefined : {
                 chunked: false,
                 data: convertedData
             },
+            json: json ? data : undefined,
             followAllRedirects: true,
             jar: true,
-            transform: (body) => cheerio.load(body)
+            transform: (body) => json ? body : cheerio.load(body)
         });
     }
 
@@ -45,17 +47,17 @@ export class Sender implements ISender
         return this._send('GET', url);
     }
 
-    public post(url: string, data?: object): RequestPromise
+    public post(url: string, data?: object, headers?: object, json?: boolean): RequestPromise
     {
-        return this._send('POST', url, data);
+        return this._send('POST', url, data, headers, json);
     }
 
-    public put(url: string, data?: object): RequestPromise
+    public put(url: string, data?: object, headers?: object, json?: boolean): RequestPromise
     {
         return this._send('PUT', url, data);
     }
 
-    public delete(url: string, data?: object): RequestPromise
+    public delete(url: string, data?: object, headers?: object, json?: boolean): RequestPromise
     {
         return this._send('DELETE', url, data);
     }

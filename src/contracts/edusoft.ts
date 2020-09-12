@@ -75,4 +75,11 @@ export interface IEduSoft extends Auth
      * @return {Promise<object[]>}
      */
     getTranscript(year: number, semester: number): Promise<object[]>;
+
+    /**
+     * Register subjects
+     * 
+     * @param id value of the subject's checkbox
+     */
+    register(id: string): Promise<any>;
 }

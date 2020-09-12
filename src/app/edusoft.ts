@@ -1,4 +1,5 @@
 import { requireSignIn } from '../decorators/signin';
+import { IRegister } from '../contracts/register';
 import { ICrawler } from '../contracts/crawler';
 import { ISender } from '../contracts/sender';
 import { IEduSoft } from '../contracts/edusoft';
@@ -45,6 +46,11 @@ export class EduSoft implements IEduSoft
     private _crawler: ICrawler;
 
     /**
+     * Register subjects
+     */
+    private _register: IRegister;
+
+    /**
      * Initialize
      * 
      * @param {string}  username    Student ID
@@ -53,7 +59,8 @@ export class EduSoft implements IEduSoft
      */
     constructor(
         @inject('ISender') sender: ISender,
-        @inject('ICrawler') crawler: ICrawler
+        @inject('ICrawler') crawler: ICrawler,
+        @inject('IRegister') register: IRegister
     )
     {
         this._username = '';
@@ -69,6 +76,7 @@ export class EduSoft implements IEduSoft
 
         this._sender = sender;
         this._crawler = crawler;
+        this._register = register;
     }
 
     public setUsername(username: string): void
@@ -163,5 +171,25 @@ export class EduSoft implements IEduSoft
             .crawlTuition(`${this._host}/Default.aspx?page=xemhocphi`);
 
         return tuition;
+    }
+
+    @requireSignIn
+    public async register(id: string): Promise<any>
+    {
+        this._register.setId(id);
+
+        let rs = await this._register
+            .access(`${this._host}/Default.aspx?page=dkmonhoc`)
+            .then(r => r.select(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .then(r => r.save(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .then(r => r.check(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .then(r => r.saved(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .then(r => r.saved2(`${this._host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .catch(e => {
+                this._register.resetAccessStatus();
+                return false;
+            });
+
+        return rs;
     }
 }
