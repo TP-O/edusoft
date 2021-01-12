@@ -1,6 +1,6 @@
 import { requireSignIn } from '../../decorators/signin';
 import { inject, injectable } from 'inversify';
-import data from '../../../data.json';
+import data from '../../data.json';
 import 'reflect-metadata';
 import { Constracts } from '../../contracts';
 
