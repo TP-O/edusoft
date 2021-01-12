@@ -1,33 +1,45 @@
-import { IRegister } from '../contracts/register';
-import { ISender } from '../contracts/sender';
 import { inject, injectable } from 'inversify';
+import { Constracts } from '../../contracts';
 import 'reflect-metadata';
+import { Types } from '../../types';
 
 @injectable()
-export class Register implements IRegister
+export class Register implements Constracts.IRegister
 {
     private _id: any;
     private _rs: any;
-    private _accessed: boolean = false;
-    private _sender: ISender;
+    private _accessed = false;
 
-    public constructor(@inject('ISender') sender: ISender)
-    {
-        this._sender = sender;
+    constructor(@inject('HCMIUSender') private _sender: Constracts.ISender) {}
+
+    async register(infor: Types.RegisterInfo): Promise<boolean> {
+
+        this.setId(infor.id);
+
+        let rs = await this.access(`${infor.host}/Default.aspx?page=dkmonhoc`)
+            .then(r => this.select(`${infor.host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .then(r => this.save(`${infor.host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .then(r => this.check(`${infor.host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .then(r => this.saved(`${infor.host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .then(r => this.saved2(`${infor.host}/ajaxpro/EduSoft.Web.UC.DangKyMonHoc,EduSoft.Web.ashx`))
+            .catch(e => {
+                this.resetAccessStatus();
+                return false;
+            });
+
+        return rs;
     }
 
-    public setId(id: string): void
-    {
+    private setId(id: string): void {
         this._id = id;
     }
 
-    public resetAccessStatus(): void
-    {
+    private resetAccessStatus(): void {
         this._accessed = false;
     }
 
-    public async access(url: string): Promise<IRegister>
-    {
+    private async access(url: string): Promise<Constracts.IRegister> {
+
         if (! this._accessed) {
             await this._sender.get(url);
             this._accessed = true;
@@ -35,8 +47,8 @@ export class Register implements IRegister
         return this;
     }
 
-    public async select(url: string): Promise<IRegister>
-    {
+    private async select(url: string): Promise<Constracts.IRegister> {
+
         let data = this._id.split('|');
         let selected = {
             "check": true,
@@ -66,8 +78,8 @@ export class Register implements IRegister
         return this;
     }
 
-    public async save(url: string): Promise<IRegister>
-    {
+    private async save(url: string): Promise<Constracts.IRegister> {
+
         let data = this._rs.value.split('|');
         let save = {
             "isValidCoso": false,
@@ -97,8 +109,7 @@ export class Register implements IRegister
         return this;
     }
 
-    public async check(url: string): Promise<IRegister>
-    {
+    private async check(url: string): Promise<Constracts.IRegister> {
         this._rs = await this._sender
             .post(
                 url,
@@ -111,8 +122,7 @@ export class Register implements IRegister
         return this;
     }
 
-    public async saved(url: string): Promise<IRegister>
-    {
+    private async saved(url: string): Promise<Constracts.IRegister> {
         this._rs = await this._sender
             .post(
                 url,
@@ -125,8 +135,7 @@ export class Register implements IRegister
         return this;
     }
 
-    public async saved2(url: string): Promise<boolean>
-    {
+    private async saved2(url: string): Promise<boolean> {
         let saved2 = {
             "isCheckSongHanh":false,
             "ChiaHP":false

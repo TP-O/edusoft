@@ -1,12 +1,16 @@
-import { IEduSoft } from './contracts/edusoft';
+import { Constracts } from './contracts';
 import container from './inversify.config';
 
-const initEdusoft = (username: string, password: string, host?: string): IEduSoft => {
-    const edusoft = container.get<IEduSoft>('IEduSoft');
-    edusoft.setUsername(username);
-    edusoft.setPassword(password);
-    if (host) edusoft.setHost(host);
+const initEduSoft = (username: string, password: string, host?: string): Constracts.IEduSoft => {
+    const edusoft = container.get<Constracts.IEduSoft>('HCMIUEduSoft');
+    edusoft.username = username;
+    edusoft.password = password;
+
+    if (host) {
+        edusoft.host = host;
+    }
+
     return edusoft;
 }
 
-export { initEdusoft, IEduSoft };
+export { initEduSoft, Constracts };

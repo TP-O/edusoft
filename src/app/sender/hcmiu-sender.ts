@@ -1,14 +1,13 @@
 import requestPromise, { RequestPromise } from 'request-promise';
-import { ISender } from '../contracts/sender';
-import cheerio from 'cheerio';
 import { injectable } from 'inversify';
+import { Constracts } from '../../contracts';
+import cheerio from 'cheerio';
 import 'reflect-metadata';
 
 @injectable()
-export class Sender implements ISender
+export class Sender implements Constracts.ISender
 {
-    private _send(method: string, url: string, data?: object, headers?: object, json?: boolean): RequestPromise
-    {
+    private _send(method: string, url: string, data?: object, headers?: object, json?: boolean): RequestPromise {
         let convertedData: any[] = data ? this._convertData(data): [];
 
         return requestPromise(url, {
@@ -28,8 +27,7 @@ export class Sender implements ISender
         });
     }
 
-    private _convertData(data: object): any[]
-    {
+    private _convertData(data: object): any[] {
         let convertedData: any[] = [];
         
         for (const [key, value] of Object.entries(data)) {
@@ -42,23 +40,19 @@ export class Sender implements ISender
         return convertedData;
     }
 
-    public get(url: string): RequestPromise
-    {
+    get(url: string): RequestPromise {
         return this._send('GET', url);
     }
 
-    public post(url: string, data?: object, headers?: object, json?: boolean): RequestPromise
-    {
+    post(url: string, data?: object, headers?: object, json?: boolean): RequestPromise {
         return this._send('POST', url, data, headers, json);
     }
 
-    public put(url: string, data?: object, headers?: object, json?: boolean): RequestPromise
-    {
+    put(url: string, data?: object, headers?: object, json?: boolean): RequestPromise {
         return this._send('PUT', url, data);
     }
 
-    public delete(url: string, data?: object, headers?: object, json?: boolean): RequestPromise
-    {
+    delete(url: string, data?: object, headers?: object, json?: boolean): RequestPromise {
         return this._send('DELETE', url, data);
     }
 }

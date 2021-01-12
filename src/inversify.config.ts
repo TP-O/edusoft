@@ -1,18 +1,8 @@
 import { Container } from 'inversify';
+import { bindHCMIU } from './dependencies/hcmiu';
 
-import { Sender } from './app/sender';
-import { Crawler } from './app/crawler';
-import { EduSoft } from './app/edusoft';
-import { Register } from './app/register';
-import { ICrawler } from './contracts/crawler';
-import { IEduSoft } from './contracts/edusoft';
-import { ISender } from './contracts/sender';
-import { IRegister } from './contracts/register';
+const container = new Container();
 
-let container = new Container();
-container.bind<ISender>('ISender').to(Sender);
-container.bind<ICrawler>('ICrawler').to(Crawler);
-container.bind<IRegister>('IRegister').to(Register);
-container.bind<IEduSoft>('IEduSoft').to(EduSoft);
+bindHCMIU(container);
 
 export default container;
