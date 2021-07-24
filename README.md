@@ -2,8 +2,8 @@
 
 **EduSoft Package** can help you get information from EduSoft website easily.
 
-    const { initEduSoft } = require('edusoft');
-    const edu = initEduSoft('<Student ID>', '<Password>');
+    const { initEduSoft } = require("edusoft");
+    const edu = initEduSoft("<Student ID>", "<Password>");
 
 ## Installation
 
@@ -41,4 +41,4 @@
 
 ### Register subject
 
-    edu.register('<Subject ID>');
+    edu.register("<Subject ID>");

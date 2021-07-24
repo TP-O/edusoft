@@ -2,25 +2,24 @@
   "name": "edusoft",
   "version": "1.0.1",
   "description": "**Edusoft** can help you get information from Edusoft website easily.",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/index.js",
+  "main": "./lib/index.js",
   "files": [
     "lib/"
   ],
   "scripts": {
-    "build": "tsc && tsc -p tsconfig.cjs.json"
+    "build": "tsc",
+    "test": "ts-node ./tests/test.ts"
   },
   "author": "TP-O",
   "license": "ISC",
   "devDependencies": {
-    "reflect-metadata": "^0.1.13",
-    "typescript": "^3.9.7",
     "@types/cheerio": "^0.22.21",
-    "@types/request-promise": "^4.1.46"
+    "@types/request-promise": "^4.1.46",
+    "ts-node": "^10.1.0",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "inversify": "^5.0.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.6"
   },

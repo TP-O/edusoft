@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "ES2020",
+    "module": "CommonJs",
     "lib": ["es6"],
     "declaration": true,
     "allowJs": true,
     "outDir": "./lib",
     "strict": true,
     "moduleResolution": "node",
-    "types": ["reflect-metadata"],
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -17,6 +16,7 @@
     "resolveJsonModule": true,
   },
   "include": [
-    "./src",
-  ]
+    "src/**/*",
+    "tests/**/*",
+  ],
 }
