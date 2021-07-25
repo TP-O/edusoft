@@ -1,12 +1,8 @@
 import { edusoft } from "./configs/edusoft";
 import { path } from "./configs/path";
-import { ExamDay } from "./types/exam";
-import { Lesson } from "./types/lesson";
-import { News } from "./types/news";
-import { Score } from "./types/score";
-import { Tuition } from "./types/tuition";
+import { ExamDay, Lesson, News, Score, Tuition } from "./types";
 
-const news = ($: cheerio.CheerioAPI): News[] => {
+const news = ($: cheerio.CheerioAPI) => {
   const news: News[] = [];
 
   $(path.news).each((_: any, element: any) => {
@@ -21,7 +17,7 @@ const news = ($: cheerio.CheerioAPI): News[] => {
   return news;
 };
 
-const schedule = ($: cheerio.CheerioAPI): Lesson[] => {
+const schedule = ($: cheerio.CheerioAPI) => {
   const lessons: Lesson[] = [];
 
   $(path.schedule).each((start: number, tr: any) => {
@@ -34,7 +30,8 @@ const schedule = ($: cheerio.CheerioAPI): Lesson[] => {
             room: $($(td).find("span")[2]).text(),
             dayOfWeek: i + 1,
             from: edusoft.classTime[start].from,
-            to: edusoft.classTime[start - 1 + +($(td).attr("rowspan") || "0")].to,
+            to: edusoft.classTime[start - 1 + +($(td).attr("rowspan") || "0")]
+              .to,
           });
         }
       });
@@ -43,7 +40,7 @@ const schedule = ($: cheerio.CheerioAPI): Lesson[] => {
   return lessons;
 };
 
-const examSchedule = ($: cheerio.CheerioAPI): ExamDay[] => {
+const examSchedule = ($: cheerio.CheerioAPI) => {
   const days: ExamDay[] = [];
 
   $(path.examSchedule).each((_: any, element: any) => {
@@ -61,8 +58,8 @@ const examSchedule = ($: cheerio.CheerioAPI): ExamDay[] => {
   return days;
 };
 
-const tuition = ($: cheerio.CheerioAPI): Tuition => {
-  return {
+const tuition = ($: cheerio.CheerioAPI) => {
+  const tuition: Tuition = {
     credits: $(path.credits).text(),
     tuition: $(path.tuition).text(),
     discount: $(path.discount).text(),
@@ -73,9 +70,11 @@ const tuition = ($: cheerio.CheerioAPI): Tuition => {
     healthInsurancePaid: $(path.healthInsurancePaid).text(),
     debt: $(path.debt).text(),
   };
+
+  return tuition;
 };
 
-const transcript = ($: cheerio.CheerioAPI): Score[] => {
+const transcript = ($: cheerio.CheerioAPI) => {
   const scores: Score[] = [];
 
   $(path.transcript).each((_: any, element: any) => {

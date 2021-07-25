@@ -1,7 +1,7 @@
 import auth from "./auth";
 import crawler from "./crawler";
 import registration from "./registration";
-import { Credentials } from "./types/credentials";
+import { Credentials } from "./types";
 
 let credentials: Credentials = {
   username: "",

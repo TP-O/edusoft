@@ -1,6 +1,6 @@
 import { uri } from "./configs/uri";
 import request from "./request";
-import { Subject } from "./types/subject";
+import { Subject } from "./types";
 
 let id = "";
 let rs = { value: "" };

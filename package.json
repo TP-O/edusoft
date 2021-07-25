@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "ts-node ./tests/test.ts"
+    "test": "ts-node test.ts"
   },
   "author": "TP-O",
   "license": "ISC",

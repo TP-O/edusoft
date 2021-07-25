@@ -1,7 +1,7 @@
 import { edusoft } from "./configs/edusoft";
 import { path } from "./configs/path";
 import request from "./request";
-import { Credentials } from "./types/credentials";
+import { Credentials } from "./types";
 
 let signedIn = false;
 
