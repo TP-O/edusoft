@@ -52,8 +52,20 @@ export const getTranscript = async (year: number, semester = 1) => {
   return await crawler.transcript(year, semester);
 };
 
-export const register = async (id: string) => {
+export const register = async (ids: string[], logging = false) => {
   await signIn();
 
-  return await registration.register({ id });
+  return ids.reduce(
+    (prevId, curId) =>
+      prevId.then(async () => {
+        const result = await registration.register({ id: curId });
+
+        if (logging) {
+          console.log(`${curId}: ${result}`);
+        }
+
+        return result;
+      }),
+    Promise.resolve(true)
+  );
 };
