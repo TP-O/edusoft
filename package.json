@@ -11,7 +11,7 @@
     "test": "ts-node test.ts"
   },
   "author": "TP-O",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/cheerio": "^0.22.21",
     "@types/request-promise": "^4.1.46",
