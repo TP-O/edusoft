@@ -40,7 +40,25 @@ const schedule = ($: cheerio.CheerioAPI) => {
   return lessons;
 };
 
-const examSchedule = ($: cheerio.CheerioAPI) => {
+const midtermExamSchedule = ($: cheerio.CheerioAPI) => {
+  const days: ExamDay[] = [];
+
+  $(path.examSchedule).each((_: any, element: any) => {
+    const columns = $(element).find("td span");
+
+    days.push({
+      subject: $(columns[2]).text(),
+      amount: $(columns[5]).text(),
+      date: $(columns[6]).text(),
+      time: $(columns[7]).text(),
+      room: $(columns[9]).text(),
+    });
+  });
+
+  return days;
+};
+
+const finalExamSchedule = ($: cheerio.CheerioAPI) => {
   const days: ExamDay[] = [];
 
   $(path.examSchedule).each((_: any, element: any) => {
@@ -90,4 +108,11 @@ const transcript = ($: cheerio.CheerioAPI) => {
   return scores;
 };
 
-export default { news, schedule, examSchedule, tuition, transcript };
+export default {
+  news,
+  schedule,
+  midtermExamSchedule,
+  finalExamSchedule,
+  tuition,
+  transcript,
+};

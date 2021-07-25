@@ -12,11 +12,11 @@ const schedule = async () => {
 };
 
 const finalExamSchedule = async () => {
-  return filter.examSchedule(await request.get(uri.finalExamSchedule));
+  return filter.finalExamSchedule(await request.get(uri.finalExamSchedule));
 };
 
 const midtermExamSchedule = async () => {
-  return filter.examSchedule(await request.get(uri.midtermExamSchedule));
+  return filter.midtermExamSchedule(await request.get(uri.midtermExamSchedule));
 };
 
 const tuition = async () => {
