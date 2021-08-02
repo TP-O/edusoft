@@ -61,7 +61,7 @@ export const register = async (ids: string[], logging = false) => {
         const result = await registration.register({ id: curId });
 
         if (logging) {
-          console.log(`${curId}: ${result}`);
+          console.log(`${curId.split("|")[2]}: ${result}`);
         }
 
         return result;
