@@ -1,9 +1,9 @@
-export interface Credentials {
+export type Credentials = {
   username: string;
   password: string;
 }
 
-export interface ExamDay {
+export type ExamDay = {
   subject: string;
   amount: string;
   date: string;
@@ -11,7 +11,7 @@ export interface ExamDay {
   room: string;
 }
 
-export interface Lesson {
+export type Lesson = {
   subject: string;
   room: string;
   dayOfWeek: number;
@@ -19,24 +19,24 @@ export interface Lesson {
   to: string;
 }
 
-export interface News {
+export type News = {
   title: string;
   date: string;
   url: string;
 }
 
-export interface Score {
+export type Score = {
   subject: string;
   assignment: string;
   midterm: string;
   final: string;
 }
 
-export interface Subject {
+export type Subject = {
   id: string;
 }
 
-export interface Tuition {
+export type Tuition = {
   credits: string;
   tuition: string;
   discount: string;
