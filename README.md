@@ -42,15 +42,15 @@ Information about your tuition.
 const tuition = await edu.getTution();
 ```
 ### Transcript
-Get transcript base on year and semester.
+Getting transcript bases on year and semester.
 Parameters:
 - Year: required
-- Semester:  default: `1`
+- Semester:  default `1`
 ```js
 const transcript = await edu.getTranscript(<Year>, <Semester>);
 ```
-### Register subjects
-Register subjects base on a list of subject IDs ([How to get ID](https://youtu.be/nPnCHI7AVZg)).  
+### Register for courses
+Registering for courses bases on a list of subject IDs ([How to get ID](https://youtu.be/nPnCHI7AVZg)).  
 ID of a subject looks like this: `PT002IU01    |PT002IU|Physical Training 2|01|3|3|01/01/0001|0|0|0| |0|ITIT19CS31`.
 ```js
 await edu.register([<Subject_ID_1>, <Subject_ID_2>], true);
