@@ -51,7 +51,9 @@ const transcript = await edu.getTranscript(<Year>, <Semester>);
 ```
 ### Register for courses
 Registering for courses bases on a list of subject IDs ([How to get ID](https://youtu.be/nPnCHI7AVZg)).  
-ID of a subject looks like this: `PT002IU01    |PT002IU|Physical Training 2|01|3|3|01/01/0001|0|0|0| |0|ITIT19CS31`.
+ID of a subject looks like this: `PT002IU01    |PT002IU|Physical Training 2|01|3|3|01/01/0001|0|0|0| |0|ITIT19CS31`.  
+
+**Warning:** Do not sign in to your account while this function is working.
 ```js
 await edu.register([<Subject_ID_1>, <Subject_ID_2>], true);
 ```
