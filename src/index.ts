@@ -53,9 +53,15 @@ export const getTranscript = async (year: number, semester = 1) => {
 };
 
 export const register = async (ids: string[], logging = false) => {
+  if (ids.length === 0) {
+    return;
+  }
+
   await signIn();
 
-  return ids.reduce(
+  let failedIds: string[] = [];
+
+  await ids.reduce(
     (prevId, curId) =>
       prevId.then(async () => {
         const result = await registration.register({ id: curId });
@@ -64,8 +70,12 @@ export const register = async (ids: string[], logging = false) => {
           console.log(`${curId.split("|")[2]}: ${result}`);
         }
 
-        return result;
+        if (!result) {
+          failedIds.push(curId);
+        }
       }),
-    Promise.resolve(true)
+    Promise.resolve()
   );
+
+  await register(failedIds, logging);
 };
