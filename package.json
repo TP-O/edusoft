@@ -1,6 +1,6 @@
 {
   "name": "edusoft",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "**Edusoft** can help you get information from Edusoft website easily.",
   "main": "./lib/index.js",
   "files": [
