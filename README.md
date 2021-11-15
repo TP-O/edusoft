@@ -1,3 +1,5 @@
+# :no_entry: [DEPRECATED]
+
 # EduSoft
 
 **EduSoft Package** can help you get information from [https://edusoftweb.hcmiu.edu.vn](https://edusoftweb.hcmiu.edu.vn/) easily.
