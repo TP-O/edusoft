@@ -1,4 +1,4 @@
-# :no_entry: [DEPRECATED]
+# :no_entry: [DEPRECATED], use [https://github.com/TP-O/goer](https://github.com/TP-O/goer) instead
 
 # EduSoft
 
